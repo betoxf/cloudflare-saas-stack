@@ -55,24 +55,75 @@ Cloudflare [Bindings](https://developers.cloudflare.com/pages/functions/bindings
 For detailed instructions on setting up bindings, refer to the Cloudflare documentation.
 
 ## Database Migrations
-Quick explaination of D1 set up:
-- D1 is a serverless database that follows SQLite convention.
-- Within Cloudflare pages and workers, you can directly query d1 with [client api](https://developers.cloudflare.com/d1/build-with-d1/d1-client-api/) exposed by bindings (eg. `env.BINDING`)
-- You can also query d1 via [rest api](https://developers.cloudflare.com/api/operations/cloudflare-d1-create-database)
-- Locally, wrangler auto generates sqlite files at `.wrangler/state/v3/d1` after `bun run dev`.
-- Local dev environment (`bun run dev`) interact with [local d1 session](https://developers.cloudflare.com/d1/build-with-d1/local-development/#start-a-local-development-session), which is based on some SQlite files located at `.wrangler/state/v3/d1`.
-- In dev mode (`bun run db:<migrate or studio>:dev`), Drizzle-kit (migrate and studio) directly modifies these files as regular SQlite db. While `bun run db:<migrate or studio>:prod` use d1-http driver to interact with remote d1 via rest api. Therefore we need to set env var at `.env.example`
 
-To generate migrations files:
-- `bun run db:generate`
+### D1 Migrations with Wrangler
 
-To apply database migrations:
-- For development: `bun run db:migrate:dev`
-- For production: `bun run db:migrate:prd`
+Cloudflare D1 uses SQLite and supports migrations through Wrangler CLI. Here's how to manage your database:
 
-To inspect database:
-- For local database `bun run db:studio:dev`
-- For remote database `bun run db:studio:prod`
+1. **Create a new migration** (when you have schema changes):
+   ```bash
+   wrangler d1 migrations create cloudflare-saas-stack-db <DESCRIPTION>
+   ```
+
+2. **Apply migrations locally** (for development):
+   ```bash
+   bun run db:migrate:dev
+   ```
+
+3. **Apply migrations to production**:
+   ```bash
+   bun run db:migrate:prod
+   ```
+
+4. **List applied migrations**:
+   ```bash
+   wrangler d1 migrations list cloudflare-saas-stack-db --remote
+   ```
+
+### Deployment Workflow
+
+For a complete deployment including database migrations:
+
+1. **Build and deploy application**:
+   ```bash
+   bun run deploy
+   ```
+
+2. **Apply database migrations**:
+   ```bash
+   bun run migrate
+   ```
+
+Or use the combined command:
+```bash
+bun run deploy:full
+```
+
+### Migration Best Practices
+
+- Always test migrations locally before applying to production
+- Use `--dry-run` to preview changes:
+  ```bash
+  wrangler d1 migrations apply cloudflare-saas-stack-db --remote --dry-run
+  ```
+
+- Rollback migrations if needed:
+  ```bash
+  wrangler d1 migrations apply cloudflare-saas-stack-db --remote --down
+  ```
+
+### Using Drizzle ORM
+
+The project includes Drizzle ORM for database management:
+
+- **Generate migrations** from schema changes:
+  ```bash
+  bun run db:generate
+  ```
+
+- **Inspect database**:
+  - Local: `bun run db:studio:dev`
+  - Production: `bun run db:studio:prod`
 
 ## Cloudflare R2 Bucket CORS / File Upload
 
@@ -126,4 +177,269 @@ If you prefer manual setup:
 - Cost-effective scaling (e.g., $5/month for multiple high-traffic projects)
 
 Just change your Cloudflare account ID in the project settings, and you're good to go!
+
+## Architecture Overview
+
+```mermaid
+graph TB
+    subgraph "Development Environment"
+        A[Local Next.js App] --> B[Wrangler Dev Server]
+        B --> C[Local D1 SQLite]
+        C --> |".wrangler/state/v3/d1"| D[Local DB Files]
+    end
+
+    subgraph "Production Environment"
+        E[Cloudflare Pages] --> F[Edge Functions]
+        F --> G[D1 Database]
+        F --> H[R2 Storage]
+        F --> I[KV Storage]
+    end
+
+    subgraph "Deployment Flow"
+        J[bun run deploy] --> |1. Build| K[.vercel/output]
+        K --> |2. Upload| E
+        L[bun run migrate] --> |3. Update DB| G
+    end
+```
+
+### Current Infrastructure
+
+1. **Wrangler Configuration** (`wrangler.toml`):
+   - D1 Database: `cloudflare-saas-stack-db`
+   - Pages Build Output: `.vercel/output/static`
+   - Node.js Compatibility Mode
+   - Smart Placement Mode
+
+2. **Environment Separation**:
+   - **Local Development**:
+     - SQLite files in `.wrangler/state/v3/d1`
+     - Local D1 session for development
+     - Drizzle Studio for database management
+   
+   - **Production**:
+     - Cloudflare D1 for database
+     - Edge Functions for API routes
+     - Pages for static content
+
+### Database Structure
+
+```mermaid
+erDiagram
+    User {
+        string id PK
+        string name
+        string email
+        timestamp emailVerified
+        string image
+    }
+    Account {
+        string id PK
+        string userId FK
+        string type
+        string provider
+        string providerAccountId
+    }
+    Session {
+        string id PK
+        string userId FK
+        timestamp expires
+        string sessionToken
+    }
+    VerificationToken {
+        string identifier
+        string token
+        timestamp expires
+    }
+```
+
+### Deployment Workflow
+
+```mermaid
+sequenceDiagram
+    participant Dev as Developer
+    participant Git as Git Repository
+    participant CF as Cloudflare Pages
+    participant D1 as D1 Database
+
+    Dev->>Git: Push Changes
+    Dev->>CF: bun run deploy
+    activate CF
+    CF-->>CF: Build Next.js App
+    CF-->>CF: Generate Edge Functions
+    CF->>CF: Deploy to Pages
+    deactivate CF
+    
+    Dev->>D1: bun run migrate
+    activate D1
+    D1-->>D1: Apply Schema Changes
+    D1-->>Dev: Migration Complete
+    deactivate D1
+```
+
+### Environment Variables
+
+1. **Development** (`.dev.vars`):
+   ```env
+   AUTH_SECRET=your_auth_secret
+   AUTH_GOOGLE_ID=your_google_id
+   AUTH_GOOGLE_SECRET=your_google_secret
+   ```
+
+2. **Production** (Cloudflare Dashboard):
+   - Same variables set through Pages dashboard
+   - Additional bindings configured in `wrangler.toml`
+
+## Project Structure
+
+```mermaid
+graph TD
+    subgraph "Project Root"
+        A["/"] --> B["src/"]
+        A --> C["public/"]
+        A --> D["drizzle/"]
+        A --> E["migrations/"]
+        A --> F[".wrangler/"]
+        
+        subgraph "Source Code (src/)"
+            B --> G["app/"]
+            B --> H["components/"]
+            B --> I["lib/"]
+            B --> J["styles/"]
+            
+            subgraph "App Directory (app/)"
+                G --> K["api/"]
+                G --> L["(auth)/"]
+                G --> M["layout.tsx"]
+                G --> N["page.tsx"]
+            end
+            
+            subgraph "Components"
+                H --> O["ui/"]
+                H --> P["auth/"]
+                H --> Q["shared/"]
+            end
+            
+            subgraph "Library (lib/)"
+                I --> R["db/"]
+                I --> S["auth/"]
+                I --> T["utils/"]
+            end
+        end
+        
+        subgraph "Database"
+            D --> U["schema.ts"]
+            D --> V["migrations/"]
+        end
+    end
+
+    classDef highlight fill:#f9f,stroke:#333,stroke-width:4px;
+    class G,R,U highlight;
+```
+
+### 🌟 Key Directories and Files
+
+#### Critical Files
+- `src/app/` - Next.js App Router pages and API routes
+- `lib/db/` - Database configuration and queries
+- `drizzle/schema.ts` - Database schema definition
+
+#### Configuration Files
+- `wrangler.toml` - Cloudflare configuration
+- `.dev.vars` - Local environment variables
+- `drizzle.config.ts` - Drizzle ORM configuration
+
+#### Core Directories
+```
+cloudflare-saas-stack/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── api/               # API routes
+│   │   ├── (auth)/            # Auth-related pages
+│   │   ├── layout.tsx         # Root layout
+│   │   └── page.tsx           # Home page
+│   │
+│   ├── components/            # React components
+│   │   ├── ui/               # Shadcn UI components
+│   │   ├── auth/             # Auth-related components
+│   │   └── shared/           # Shared components
+│   │
+│   └── lib/                   # Shared utilities
+│       ├── db/               # Database utilities
+│       ├── auth/             # Auth configuration
+│       └── utils/            # Helper functions
+│
+├── drizzle/                   # Database
+│   ├── schema.ts             # Schema definition
+│   └── migrations/           # Migration files
+│
+├── public/                    # Static assets
+└── .wrangler/                # Local development files
+```
+
+### 🔑 Important Aspects
+
+1. **Database Layer**
+   - `drizzle/schema.ts` - Defines database structure
+   - `lib/db/` - Database queries and connections
+   - `migrations/` - Database migration files
+
+2. **Authentication**
+   - `src/app/(auth)/` - Auth-related pages
+   - `lib/auth/` - Auth configuration
+   - `.dev.vars` - Auth environment variables
+
+3. **API Routes**
+   - `src/app/api/` - API endpoints
+   - Edge Functions configuration
+   - API route handlers
+
+4. **Frontend**
+   - Server Components in `src/app/`
+   - Client Components in `src/components/`
+   - Shared UI components in `components/ui/`
+
+### 📝 Development Guidelines
+
+1. **Component Organization**
+   - Place reusable UI components in `components/ui/`
+   - Auth-related components go in `components/auth/`
+   - Shared business logic in `components/shared/`
+
+2. **Database Changes**
+   - Update schema in `drizzle/schema.ts`
+   - Generate migrations with `bun run db:generate`
+   - Apply migrations with `bun run db:migrate:dev`
+
+3. **API Development**
+   - Create new routes in `src/app/api/`
+   - Use Edge Functions for optimal performance
+   - Leverage D1 database through bindings
+
+4. **Authentication Flow**
+   - Configure providers in `lib/auth/`
+   - Update UI in `components/auth/`
+   - Manage sessions with NextAuth.js
+
+## Adding UI Components
+
+This project uses Shadcn UI for components. To add new components:
+
+```bash
+bunx --bun shadcn@latest add <component>
+```
+
+IMPORTANT: Always use the `--bun` flag when adding components, otherwise you'll get an error.
+
+Example:
+```bash
+bunx --bun shadcn@latest add button
+bunx --bun shadcn@latest add card
+bunx --bun shadcn@latest add dropdown-menu
+```
+
+Currently implemented components:
+- Button (with variants)
+- Card
+- Avatar
+- Dropdown Menu
 

@@ -4,8 +4,54 @@ import { auth, signIn, signOut } from "@/server/auth";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
 import { getThemeToggler } from "@/lib/theme/get-theme-button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+	Card,
+	CardContent,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 export const runtime = "edge";
+
+const roles = [
+	{
+		title: "Drivers",
+		icon: <Image src="/box-truck.svg" alt="Drivers" width={48} height={48} />,
+		description: "Company drivers and owner operators managing frac sand deliveries"
+	},
+	{
+		title: "Pushers",
+		icon: <Image src="/silhouette.svg" alt="Pushers" width={48} height={48} />,
+		description: "Staging pad operations and document verification"
+	},
+	{
+		title: "Dispatch",
+		icon: <Image src="/report-2.svg" alt="Dispatch" width={48} height={48} />,
+		description: "Coordinate sand deliveries and well site operations"
+	},
+	{
+		title: "Service",
+		icon: <Image src="/alert.svg" alt="Service" width={48} height={48} />,
+		description: "Fleet maintenance, repairs, and fuel management"
+	},
+	{
+		title: "Admin",
+		icon: <Image src="/office.svg" alt="Admin" width={48} height={48} />,
+		description: "System administration and partner coordination"
+	}
+];
 
 export default async function Page() {
 	const session = await auth();
@@ -19,99 +65,117 @@ export default async function Page() {
 	const SetThemeButton = getThemeToggler();
 
 	return (
-		<main className="flex flex-col items-center justify-center min-h-screen">
-			<div className="flex max-w-2xl justify-between w-full">
-				<SetThemeButton />
+		<main className="main-container">
+			{/* Title - Only visible on mobile */}
+			<h1 className="text-3xl font-bold mb-8 px-4 md:hidden">
+				Select your role
+			</h1>
 
-				<div className="flex gap-2 items-center justify-center">
-					{" "}
-					<svg
-						viewBox="0 0 256 116"
-						xmlns="http://www.w3.org/2000/svg"
-						width="45px"
-						height="45px"
-						preserveAspectRatio="xMidYMid"
-						role="img"
-						aria-label="Cloudflare logo"
-					>
-						<path
-							fill="#FFF"
-							d="m202.357 49.394-5.311-2.124C172.085 103.434 72.786 69.289 66.81 85.997c-.996 11.286 54.227 2.146 93.706 4.059 12.039.583 18.076 9.671 12.964 24.484l10.069.031c11.615-36.209 48.683-17.73 50.232-29.68-2.545-7.857-42.601 0-31.425-35.497Z"
-						/>
-						<path
-							fill="#F4811F"
-							d="M176.332 108.348c1.593-5.31 1.062-10.622-1.593-13.809-2.656-3.187-6.374-5.31-11.154-5.842L71.17 87.634c-.531 0-1.062-.53-1.593-.53-.531-.532-.531-1.063 0-1.594.531-1.062 1.062-1.594 2.124-1.594l92.946-1.062c11.154-.53 22.839-9.56 27.087-20.182l5.312-13.809c0-.532.531-1.063 0-1.594C191.203 20.182 166.772 0 138.091 0 111.535 0 88.697 16.995 80.73 40.896c-5.311-3.718-11.684-5.843-19.12-5.31-12.747 1.061-22.838 11.683-24.432 24.43-.531 3.187 0 6.374.532 9.56C16.996 70.107 0 87.103 0 108.348c0 2.124 0 3.718.531 5.842 0 1.063 1.062 1.594 1.594 1.594h170.489c1.062 0 2.125-.53 2.125-1.594l1.593-5.842Z"
-						/>
-						<path
-							fill="#FAAD3F"
-							d="M205.544 48.863h-2.656c-.531 0-1.062.53-1.593 1.062l-3.718 12.747c-1.593 5.31-1.062 10.623 1.594 13.809 2.655 3.187 6.373 5.31 11.153 5.843l19.652 1.062c.53 0 1.062.53 1.593.53.53.532.53 1.063 0 1.594-.531 1.063-1.062 1.594-2.125 1.594l-20.182 1.062c-11.154.53-22.838 9.56-27.087 20.182l-1.063 4.78c-.531.532 0 1.594 1.063 1.594h70.108c1.062 0 1.593-.531 1.593-1.593 1.062-4.25 2.124-9.03 2.124-13.81 0-27.618-22.838-50.456-50.456-50.456"
-						/>
-					</svg>
-					<span className="italic">Cloudflare Next Saas Starter</span>
-				</div>
+			{/* Role Cards - Different layouts for mobile/desktop */}
+			<div className="w-full max-w-[1400px] mx-auto px-4">
+				{/* Mobile Layout */}
+				<div className="md:hidden flex flex-col gap-4">
+					{/* First Row - Full Width */}
+					<Card className="group hover:shadow-2xl transition-all duration-300 border-none bg-card">
+						<CardHeader className="text-center pb-2">
+							<div className="flex justify-center items-center mb-2">{roles[0].icon}</div>
+							<CardTitle className="text-xl font-semibold">{roles[0].title}</CardTitle>
+						</CardHeader>
+						<CardContent className="text-center text-sm text-muted-foreground">
+							{roles[0].description}
+						</CardContent>
+						<CardFooter className="justify-end pt-2 pr-4">
+							<Button 
+								variant="ghost" 
+								size="icon" 
+								className="rounded-full w-10 h-10 bg-primary text-primary-foreground hover:scale-110 transition-transform duration-200"
+							>
+								<ArrowRight className="h-4 w-4" />
+							</Button>
+						</CardFooter>
+					</Card>
 
-				<div className="border border-black dark:border-white rounded-2xl p-2 flex items-center">
-					Start by editing apps/web/page.tsx
-				</div>
-			</div>
+					{/* Second Row - Two Cards */}
+					<div className="grid grid-cols-2 gap-4">
+						{roles.slice(1, 3).map((role) => (
+							<Card 
+								key={role.title} 
+								className="group hover:shadow-2xl transition-all duration-300 border-none bg-card"
+							>
+								<CardHeader className="text-center pb-2">
+									<div className="flex justify-center items-center mb-2">{role.icon}</div>
+									<CardTitle className="text-lg font-semibold">{role.title}</CardTitle>
+								</CardHeader>
+								<CardContent className="text-center text-xs text-muted-foreground">
+									{role.description}
+								</CardContent>
+								<CardFooter className="justify-end pt-2 pr-2">
+									<Button 
+										variant="ghost" 
+										size="icon" 
+										className="rounded-full w-8 h-8 bg-primary text-primary-foreground hover:scale-110 transition-transform duration-200"
+									>
+										<ArrowRight className="h-3 w-3" />
+									</Button>
+								</CardFooter>
+							</Card>
+						))}
+					</div>
 
-			<div className="max-w-2xl text-start w-full mt-16">
-				Welcome to Cloudflare Next Saas Starter. <br /> Built a full stack app
-				using production-ready tools and frameworks, host on Cloudflare
-				instantly.
-				<br />
-				An opinionated, batteries-included framework with{" "}
-				<a
-					className="text-transparent bg-clip-text bg-gradient-to-r from-[#a93d64] to-[#275ba9]"
-					href="https://turbo.build"
-				>
-					Turborepo
-				</a>{" "}
-				and Nextjs. Fully Typesafe. Best practices followed by default.
-				<br /> <br />
-				Here&apos;s what the stack includes:
-				<ul className="list-disc mt-4 prose dark:prose-invert">
-					<li>
-						Authentication with <code>next-auth</code>
-					</li>
-					<li>Database using Cloudflare&apos;s D1 serverless databases</li>
-					<li>Drizzle ORM, already connected to your database and auth ⚡</li>
-					<li>Light/darkmode theming that works with server components (!)</li>
-						<li>Styling using TailwindCSS and ShadcnUI</li>
-						<li>Turborepo with a landing page and shared components</li>
-						<li>Cloudflare wrangler for quick functions on the edge</li>
-						<li>
-							... best part: everything&apos;s already set up for you. Just code!
-						</li>
-				</ul>
-				<div className="mt-4 flex flex-col gap-2">
-					<span>Number of users in database: {userCount[0]!.count}</span>
-				</div>
-				{session?.user?.email ? (
-					<>
-						<div className="mt-4 flex flex-col gap-2">
-							<span>Hello {session.user.name} 👋</span>
-							<span>{session.user.email}</span>
+					{/* Third Row - One Card */}
+					<Card className="group hover:shadow-2xl transition-all duration-300 border-none bg-card">
+						<CardHeader className="text-center pb-2">
+							<div className="flex justify-center items-center mb-2">{roles[3].icon}</div>
+							<CardTitle className="text-xl font-semibold">{roles[3].title}</CardTitle>
+						</CardHeader>
+						<CardContent className="text-center text-sm text-muted-foreground">
+							{roles[3].description}
+						</CardContent>
+						<CardFooter className="justify-end pt-2 pr-4">
+							<Button 
+								variant="ghost" 
+								size="icon" 
+								className="rounded-full w-10 h-10 bg-primary text-primary-foreground hover:scale-110 transition-transform duration-200"
+							>
+								<ArrowRight className="h-4 w-4" />
+							</Button>
+						</CardFooter>
+					</Card>
+
+					{/* Other Section */}
+					{roles.length > 5 && (
+						<div className="text-center text-xl text-muted-foreground mt-4">
+							Other
 						</div>
-						<form
-							action={async () => {
-								"use server";
-								await signOut();
-							}}
+					)}
+				</div>
+
+				{/* Desktop Grid Layout - Hidden on Mobile */}
+				<div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+					{roles.map((role) => (
+						<Card 
+							key={role.title} 
+							className="group hover:shadow-2xl transition-all duration-300 border-none bg-card"
 						>
-							<Button className="mt-4">Sign out</Button>
-						</form>
-					</>
-				) : (
-					<form
-						action={async () => {
-							"use server";
-							await signIn("google");
-						}}
-					>
-						<Button className="mt-4">Login with Google</Button>
-					</form>
-				)}
+							<CardHeader className="text-center pb-2">
+								<div className="flex justify-center items-center mb-2">{role.icon}</div>
+								<CardTitle className="text-xl font-semibold">{role.title}</CardTitle>
+							</CardHeader>
+							<CardContent className="text-center text-sm text-muted-foreground">
+								{role.description}
+							</CardContent>
+							<CardFooter className="justify-center pt-2">
+								<Button 
+									variant="ghost" 
+									size="icon" 
+									className="rounded-full w-10 h-10 bg-primary text-primary-foreground hover:scale-110 transition-transform duration-200"
+								>
+									<ArrowRight className="h-4 w-4" />
+								</Button>
+							</CardFooter>
+						</Card>
+					))}
+				</div>
 			</div>
 		</main>
 	);

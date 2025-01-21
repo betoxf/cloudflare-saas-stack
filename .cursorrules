@@ -1,3 +1,68 @@
+# Omma Trucking Management System
+Current Stage: Implementing transportation and logistics management system
+
+Business Context:
+- Last mile and frac sand transportation specialists
+- Fleet management (trucks, chassis, equipment)
+- Driver management (company drivers and owner operators)
+- Sand plant and well operations coordination
+- Multi-company operations support
+- Maintenance and fuel tracking
+- Load and delivery management
+
+Key Features:
+1. Driver Management
+   - Company drivers and owner operators
+   - Equipment assignments
+   - Document management
+   - Load tracking
+
+2. Equipment Tracking
+   - Trucks and chassis management
+   - Maintenance scheduling
+   - Fuel consumption tracking
+   - Equipment assignments
+
+3. Operations Management
+   - Well site coordination
+   - Sand plant integration
+   - Load scheduling
+   - Partner company coordination
+
+4. Resource Management
+   - Sand inventory tracking
+   - Fuel management
+   - Maintenance scheduling
+   - Document handling
+
+5. Administrative Tools
+   - Accounting integration
+   - Report generation
+   - Partner management
+   - System configuration
+
+Technical Requirements:
+1. Edge Runtime Configuration
+   - Add `export const runtime = 'edge';` to all dynamic routes
+   - Required for Cloudflare Pages deployment
+
+2. Layout and UI
+   - Responsive design for all devices
+   - Fixed header with proper content spacing
+   - Dark/light theme support
+   - Mobile-friendly navigation
+
+# Edge Runtime Configuration
+- Add `export const runtime = 'edge';` to all dynamic routes
+- Required for Cloudflare Pages deployment
+- All dynamic routes must use Edge Runtime
+- Add to API routes and dynamic pages
+
+# Layout Fixes
+- Add padding-top to main content to account for fixed header
+- Ensure header doesn't overlap with page content
+- Maintain consistent spacing across all pages
+- Fix header overlap issues on course pages
 
   You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, Radix UI, Tailwind CSS and DrizzleORM.
 
@@ -9,6 +74,39 @@
 
   In the terminal, you are also an expert at suggesting wrangler commands.
   
+ 
+  If you are not sure about the command, ask the user to run `bun run dev` to see if it works.
+  If it doesn't work, ask the user to run `bun run dev -- --inspect` to see if it works.
+  If it doesn't work, ask the user to run `bun run dev -- --inspect-brk` to see if it works.
+
+  if you are not sure always refer to the documentation: 
+  
+  https://developers.cloudflare.com/pages/
+  https://developers.cloudflare.com/pages/platform/functions/
+  https://developers.cloudflare.com/pages/platform/d1/
+  https://developers.cloudflare.com/pages/platform/r2/
+  https://developers.cloudflare.com/pages/platform/kv/
+  https://developers.cloudflare.com/pages/platform/ai/
+
+  https://ui.shadcn.com/docs/components/button
+  https://ui.shadcn.com/docs/components/card
+  https://ui.shadcn.com/docs/components/dialog
+  https://ui.shadcn.com/docs/components/dropdown-menu
+  https://ui.shadcn.com/docs/components/avatar
+
+  https://nextjs.org/docs/app/api-reference/file-conventions/metadata
+  https://nextjs.org/docs/app/api-reference/file-conventions/layout
+  https://nextjs.org/docs/app/api-reference/file-conventions/page
+  https://nextjs.org/docs/app/api-reference/file-conventions/api
+  https://nextjs.org/docs/app/api-reference/file-conventions/auth
+  https://nextjs.org/docs/app/api-reference/file-conventions/api-routes
+  https://nextjs.org/docs/app/api-reference/file-conventions/components
+  https://nextjs.org/docs/app/api-reference/file-conventions/lib
+  https://nextjs.org/docs/app/api-reference/file-conventions/public
+  https://nextjs.org/docs/app/api-reference/file-conventions/app
+
+
+
   Code Style and Structure
   - Write concise, technical TypeScript code with accurate examples.
   - Use functional and declarative programming patterns; avoid classes.
@@ -49,4 +147,213 @@
     - Avoid for data fetching or state management.
   
   Follow Next.js docs for Data Fetching, Rendering, and Routing.
+
+
+
+IMPORTANT: YOU MUST PERFORM AN UPDATE TO .cursorrules file at each step and turn with a new user request
+IMPORTANT: AFTER EACH USER REQUEST, CREATE AND/OR UPDATE .cursorrules file as a step by step description of the project user is trying to build, do not embelish, add or take away any detail. just translate user request to a nicely formated instructions.
+Your action sequence in each turn should be:
+1) create or update .cursorrules file per user request
+2) work on the files/answer user request
+3) double check if cursorules was updated to reflect the changes
+IMPORTANT: NEVER FORGET TO UPDATE THE .cursorrules file in each consecutuve user request to reflect the latest stage of our project. This is imperative as this will be used for the future
+
   
+Architecture and Infrastructure Knowledge:
+
+- Expert understanding of Cloudflare Pages architecture:
+  - Edge Functions deployment
+  - Static asset optimization
+  - D1 database integration
+  - Environment separation (dev/prod)
+
+- Database Management:
+  - D1 and SQLite compatibility
+  - Migration strategies
+  - Local vs. remote database handling
+  - Drizzle ORM integration
+
+- Deployment Expertise:
+  - Wrangler configuration
+  - Environment variable management
+  - Database migration workflows
+  - Build optimization
+
+Infrastructure Components:
+- Pages: Static and dynamic content serving
+- D1: Serverless SQL database
+- R2: Object storage
+- KV: Key-value storage
+- Workers: Edge computing
+- Bindings: Resource connections
+
+Development Workflow:
+- Local development with Wrangler
+- Database migration handling
+- Production deployment process
+- Environment variable management
+  
+
+
+### 🔑 Important Aspects
+
+1. **Database Layer**
+   - `drizzle/schema.ts` - Defines database structure
+   - `lib/db/` - Database queries and connections
+   - `migrations/` - Database migration files
+
+2. **Authentication**
+   - `src/app/(auth)/` - Auth-related pages
+   - `lib/auth/` - Auth configuration
+   - `.dev.vars` - Auth environment variables
+
+3. **API Routes**
+   - `src/app/api/` - API endpoints
+   - Edge Functions configuration
+   - API route handlers
+
+4. **Frontend**
+   - Server Components in `src/app/`
+   - Client Components in `src/components/`
+   - Shared UI components in `components/ui/`
+
+### 📝 Development Guidelines
+
+1. **Component Organization**
+   - Place reusable UI components in `components/ui/`
+   - Auth-related components go in `components/auth/`
+   - Shared business logic in `components/shared/`
+
+2. **Database Changes**
+   - Update schema in `drizzle/schema.ts`
+   - Generate migrations with `bun run db:generate`
+   - Apply migrations with `bun run db:migrate:dev`
+
+3. **API Development**
+   - Create new routes in `src/app/api/`
+   - Use Edge Functions for optimal performance
+   - Leverage D1 database through bindings
+
+4. **Authentication Flow**
+   - Configure providers in `lib/auth/`
+   - Update UI in `components/auth/`
+   - Manage sessions with NextAuth.js
+
+cloudflare-saas-stack/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── api/               # API routes
+│   │   ├── (auth)/            # Auth-related pages
+│   │   ├── layout.tsx         # Root layout
+│   │   └── page.tsx           # Home page
+│   │
+│   ├── components/            # React components
+│   │   ├── ui/               # Shadcn UI components
+│   │   ├── auth/             # Auth-related components
+│   │   └── shared/           # Shared components
+│   │
+│   └── lib/                   # Shared utilities
+│       ├── db/               # Database utilities
+│       ├── auth/             # Auth configuration
+│       └── utils/            # Helper functions
+│
+├── drizzle/                   # Database
+│   ├── schema.ts             # Schema definition
+│   └── migrations/           # Migration files
+│
+├── public/                    # Static assets
+└── .wrangler/                # Local development files
+
+
+Development Guidelines:
+
+UI Components:
+  - Using Shadcn UI for component library
+  - Use `bun add` or `bun install` for package installation
+  - Add new components using: `bunx --bun shadcn@latest add <component>`
+  - IMPORTANT: Always use `--bun` flag with shadcn commands
+  - Components located in src/components/ui/
+  - Custom components in src/components/layout/ and src/components/shared/
+  - Dark mode support included
+  - Responsive design with Tailwind CSS
+  - Currently implemented components:
+    - Button (with all variants)
+    - Avatar (with image and fallback)
+    - DropdownMenu (with nested components)
+    - Card (with header, content, footer)
+    - Dialog (for login modal)
+  - Custom styling:
+    - Cards with hover shadow effect
+    - Circular buttons with icons
+    - Responsive grid layout
+    - Clean, minimal design
+  - Auth Components:
+    - LoginDialog with social providers
+    - Integrated with NextAuth
+    - Responsive modal:
+      - Max-width: 425px
+      - 90% width on mobile
+      - Rounded corners (lg)
+    - Sample showcase added to main page (src/app/page.tsx)
+
+Layout Structure:
+  - Header with authentication
+  - Main content container
+  - Responsive layout:
+    - Mobile: Collage-style layout
+      - Full-width cards
+      - Two-column cards
+      - Different card sizes
+      - "Other" section only shows when >5 cards
+    - Desktop: Grid layout
+      - Equal-sized cards
+      - 5 columns on extra-large screens
+  - CSS Structure:
+    - Global styles in globals.css
+    - Custom Tailwind layers for layout
+    - Responsive design patterns
+    - Mobile-first approach
+    - Proper dark mode handling:
+      - Light bg: gray-50
+      - Dark bg: gray-900
+      - Card bg: white/gray-800
+  - Auth Components:
+    - LoginDialog with social providers
+    - Integrated with NextAuth
+    - Responsive modal:
+      - Max-width: 425px
+      - 90% width on mobile
+      - Rounded corners (lg)
+    - Sample showcase added to main page (src/app/page.tsx)
+
+
+## Adding UI Components
+
+This project uses Shadcn UI for components. To add new components:
+
+```bash
+bunx --bun shadcn@latest add <component>
+
+
+IMPORTANT: Always use the `--bun` flag when adding components, otherwise you'll get an error.
+
+Example:
+```bash
+bunx --bun shadcn@latest add button
+bunx --bun shadcn@latest add card
+bunx --bun shadcn@latest add dropdown-menu
+```
+
+Currently implemented components:
+- Button (with variants)
+- Card
+- Avatar
+- Dropdown Menu
+
+# Header Component Update
+- Replace current header with new navigation menu header
+- Integrate existing logo and auth functionality
+- Add navigation items for Home, Product, and Company sections
+- Maintain responsive design with mobile menu
+- Keep existing auth functionality with login dialog and user dropdown
+
