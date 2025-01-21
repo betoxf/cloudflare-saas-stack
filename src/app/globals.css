@@ -73,7 +73,7 @@
 /* Add custom container styles */
 @layer components {
   .main-container {
-    @apply flex min-h-[calc(100vh-4rem)] flex-col items-center justify-start pt-52 p-4 bg-background;
+    @apply flex min-h-[calc(100vh-4rem)] flex-col items-center justify-start p-4 md:pt-52 bg-background;
   }
   
   .cards-grid-container {
@@ -86,6 +86,22 @@
 
   .card-description {
     @apply line-clamp-2 text-sm text-muted-foreground text-center;
+  }
+
+  .mobile-nav {
+    @apply md:hidden flex justify-center items-center w-full;
+  }
+
+  .desktop-nav {
+    @apply hidden md:flex justify-between items-center w-full;
+  }
+
+  .logo-container {
+    @apply flex items-center;
+  }
+
+  .logo-container img {
+    @apply w-auto h-8 md:h-9;
   }
 }
 

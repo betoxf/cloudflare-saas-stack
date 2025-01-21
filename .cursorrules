@@ -65,11 +65,20 @@ Technical Requirements:
 - Fix header overlap issues on course pages
 
 # Layout Adjustment Task
-- Adjust vertical positioning of cards on all pages
-- Reduce excessive spacing from top menu
+- Adjust vertical positioning of cards on desktop only (pt-52)
+- Keep mobile cards at original position
+- Center mobile menu
+- Move sign-in button to hamburger menu on mobile
+- Slightly reduce logo size
 - Maintain responsive design
-- Keep cards centered but closer to top
+- Keep cards centered but closer to top on desktop
 - Preserve existing card grid layout
+
+# Mobile Navigation Updates
+- Center align mobile navigation
+- Move authentication to hamburger menu on mobile
+- Reduce logo size slightly
+- Keep desktop layout unchanged
 
   You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, Radix UI, Tailwind CSS and DrizzleORM.
 

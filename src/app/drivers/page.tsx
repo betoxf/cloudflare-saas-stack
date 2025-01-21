@@ -15,23 +15,27 @@ export const runtime = 'edge';
 const driverSections = [
 	{
 		title: "Learning",
-		icon: <Image src="/book-open.svg" alt="Learning" width={48} height={48} />,
-		description: "Access training courses and educational materials"
+		icon: <Image src="/dictionary.svg" alt="Learning" width={48} height={48} />,
+		description: "Access training materials and courses",
+		href: "/drivers/learning"
 	},
 	{
 		title: "Dashboard",
-		icon: <Image src="/chart-bar.svg" alt="Dashboard" width={48} height={48} />,
-		description: "View your trips, income, and performance metrics"
+		icon: <Image src="/report-2.svg" alt="Dashboard" width={48} height={48} />,
+		description: "View your trips and income",
+		href: "/drivers/dashboard"
 	},
 	{
 		title: "Contact",
-		icon: <Image src="/telephone.svg" alt="Contact" width={48} height={48} />,
-		description: "Get in touch with support and management"
+		icon: <Image src="/letter.svg" alt="Contact" width={48} height={48} />,
+		description: "Get in touch with dispatch and support",
+		href: "/drivers/contact"
 	},
 	{
 		title: "Navigation",
-		icon: <Image src="/road.svg" alt="Navigation" width={48} height={48} />,
-		description: "Access route planning and navigation tools"
+		icon: <Image src="/road-2.svg" alt="Navigation" width={48} height={48} />,
+		description: "Access maps and directions",
+		href: "/drivers/navigation"
 	}
 ];
 

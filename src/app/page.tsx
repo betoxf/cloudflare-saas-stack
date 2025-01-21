@@ -20,25 +20,25 @@ export const runtime = "edge";
 const roles = [
 	{
 		title: "Drivers",
-		icon: <Image src="/box-truck.svg" alt="Drivers" width={48} height={48} />,
+		icon: <Image src="/cargo-truck.svg" alt="Drivers" width={48} height={48} />,
 		description: "Company drivers and owner operators managing frac sand deliveries",
 		href: "/drivers"
 	},
 	{
 		title: "Pushers",
-		icon: <Image src="/silhouette.svg" alt="Pushers" width={48} height={48} />,
+		icon: <Image src="/pusher.svg" alt="Pushers" width={48} height={48} />,
 		description: "Staging pad operations and document verification",
 		href: "/pushers"
 	},
 	{
 		title: "Dispatch",
-		icon: <Image src="/report-2.svg" alt="Dispatch" width={48} height={48} />,
+		icon: <Image src="/talking.svg" alt="Dispatch" width={48} height={48} />,
 		description: "Coordinate sand deliveries and well site operations",
 		href: "/dispatch"
 	},
 	{
 		title: "Service",
-		icon: <Image src="/alert.svg" alt="Service" width={48} height={48} />,
+		icon: <Image src="/car-3.svg" alt="Service" width={48} height={48} />,
 		description: "Fleet maintenance, repairs, and fuel management",
 		href: "/service"
 	},

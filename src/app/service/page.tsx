@@ -15,28 +15,33 @@ export const runtime = 'edge';
 const serviceSections = [
 	{
 		title: "Box Status",
-		icon: <Image src="/box.svg" alt="Box Status" width={48} height={48} />,
-		description: "Track repairs and maintenance status of boxes"
+		icon: <Image src="/sandcan.svg" alt="Box Status" width={48} height={48} />,
+		description: "Track repairs and maintenance status",
+		href: "/service/box-status"
 	},
 	{
-		title: "Mechanics Schedule",
+		title: "Mechanics Time Table",
 		icon: <Image src="/calendar.svg" alt="Mechanics Schedule" width={48} height={48} />,
-		description: "View and manage mechanics time table"
+		description: "View and manage mechanic schedules",
+		href: "/service/mechanics"
 	},
 	{
 		title: "Chassis Inspections",
-		icon: <Image src="/road-2.svg" alt="Chassis Inspections" width={48} height={48} />,
-		description: "Manage chassis inspection records"
+		icon: <Image src="/technology.svg" alt="Chassis Inspections" width={48} height={48} />,
+		description: "Manage chassis inspection records",
+		href: "/service/chassis"
 	},
 	{
 		title: "Truck Inspections",
-		icon: <Image src="/box-truck.svg" alt="Truck Inspections" width={48} height={48} />,
-		description: "Track truck inspection status and history"
+		icon: <Image src="/repair-2.svg" alt="Truck Inspections" width={48} height={48} />,
+		description: "Track truck inspection status",
+		href: "/service/trucks"
 	},
 	{
 		title: "Diesel Expenses",
-		icon: <Image src="/banknote.svg" alt="Diesel Expenses" width={48} height={48} />,
-		description: "Monitor and manage fuel costs"
+		icon: <Image src="/power.svg" alt="Diesel Expenses" width={48} height={48} />,
+		description: "Monitor fuel consumption and costs",
+		href: "/service/diesel"
 	}
 ];
 

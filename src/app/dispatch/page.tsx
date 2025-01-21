@@ -12,23 +12,43 @@ import { BackButton } from "@/components/ui/back-button";
 
 export const runtime = 'edge';
 
-const companies = ["Sandcan", "Liberty", "Propx", "ProFrac"];
+const companies = [
+	{
+		name: "Sandcan",
+		logo: "/sandcanlogo-300.svg"
+	},
+	{
+		name: "Liberty",
+		logo: "/liberty-logo.svg"
+	},
+	{
+		name: "Propx",
+		logo: "/PropX+logo+WHITE+TM-2.svg"
+	},
+	{
+		name: "ProFrac",
+		logo: "/profraclogo.svg"
+	}
+];
 
 const dispatchSections = [
 	{
 		title: "Contact",
-		icon: <Image src="/telephone.svg" alt="Contact" width={48} height={48} />,
-		description: "Communication hub for operations coordination"
+		icon: <Image src="/letter.svg" alt="Contact" width={48} height={48} />,
+		description: "Get in touch with drivers and support",
+		href: "/dispatch/contact"
 	},
 	{
 		title: "Analytics",
-		icon: <Image src="/report.svg" alt="Analytics" width={48} height={48} />,
-		description: "Performance metrics and operational insights"
+		icon: <Image src="/chart-bar.svg" alt="Analytics" width={48} height={48} />,
+		description: "View delivery metrics and performance",
+		href: "/dispatch/analytics"
 	},
 	...companies.map(company => ({
-		title: `${company} Dashboard`,
-		icon: <Image src="/chart-bar.svg" alt={`${company} Dashboard`} width={48} height={48} />,
-		description: `Monitor and manage ${company} operations`
+		title: `${company.name} Dashboard`,
+		icon: <Image src={company.logo} alt={`${company.name} Dashboard`} width={48} height={48} />,
+		description: `Monitor operations for ${company.name}`,
+		href: `/dispatch/${company.name.toLowerCase()}`
 	}))
 ];
 

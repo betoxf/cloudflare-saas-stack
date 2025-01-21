@@ -12,18 +12,37 @@ import { BackButton } from "@/components/ui/back-button";
 
 export const runtime = 'edge';
 
-const companies = ["Sandcan", "Liberty", "Propx", "ProFrac"];
+const companies = [
+	{
+		name: "Sandcan",
+		logo: "/sandcanlogo-300.svg"
+	},
+	{
+		name: "Liberty",
+		logo: "/liberty-logo.svg"
+	},
+	{
+		name: "Propx",
+		logo: "/PropX+logo+WHITE+TM-2.svg"
+	},
+	{
+		name: "ProFrac",
+		logo: "/profraclogo.svg"
+	}
+];
 
 const pusherSections = [
 	{
 		title: "Face Scan",
-		icon: <Image src="/person-2.svg" alt="Face Scan" width={48} height={48} />,
-		description: "Facial recognition and identity verification system"
+		icon: <Image src="/face-recognition.svg" alt="Face Scan" width={48} height={48} />,
+		description: "Verify driver identity with facial recognition",
+		href: "/pushers/face-scan"
 	},
 	...companies.map(company => ({
-		title: `${company} Box Management`,
-		icon: <Image src="/box.svg" alt={`${company} Management`} width={48} height={48} />,
-		description: `Manage and track boxes for ${company} operations`
+		title: `${company.name} Box Management`,
+		icon: <Image src={company.logo} alt={`${company.name} Management`} width={48} height={48} />,
+		description: `Manage and track boxes for ${company.name} operations`,
+		href: `/pushers/${company.name.toLowerCase()}`
 	}))
 ];
 

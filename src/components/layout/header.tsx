@@ -156,16 +156,16 @@ export function Header() {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div className="flex lg:justify-center">
-          <a href="/" className="flex items-center">
-            <Logo width={122} height={29} />
+        <div className="absolute left-1/2 -translate-x-1/2 lg:static lg:transform-none lg:flex lg:justify-center">
+          <a href="/" className="logo-container">
+            <Logo width={110} height={26} className="md:w-[122px] md:h-[29px]" />
           </a>
         </div>
         <div className="flex justify-end w-full gap-4">
           {session ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full md:flex hidden">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={session.user?.image || ''} alt={session.user?.name || ''} />
                     <AvatarFallback>{session.user?.name?.[0]}</AvatarFallback>
@@ -190,10 +190,12 @@ export function Header() {
           ) : (
             <>
               <Button variant="ghost" className="hidden md:inline">
-                Book a demo
+                We are Hiring!
               </Button>
               <div className="border-r hidden md:inline"></div>
-              <LoginDialog />
+              <div className="hidden md:block">
+                <LoginDialog />
+              </div>
             </>
           )}
         </div>
@@ -233,6 +235,29 @@ export function Header() {
                   </div>
                 </div>
               ))}
+              <div className="md:hidden pt-4 border-t">
+                {session ? (
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2 px-4">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={session.user?.image || ''} alt={session.user?.name || ''} />
+                        <AvatarFallback>{session.user?.name?.[0]}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium">{session.user?.name}</span>
+                        <span className="text-xs text-muted-foreground">{session.user?.email}</span>
+                      </div>
+                    </div>
+                    <Button variant="ghost" className="justify-start" onClick={() => signOut()}>
+                      Log out
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="px-4">
+                    <LoginDialog />
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>

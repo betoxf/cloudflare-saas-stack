@@ -16,27 +16,32 @@ const adminSections = [
 	{
 		title: "Payroll",
 		icon: <Image src="/banknote.svg" alt="Payroll" width={48} height={48} />,
-		description: "Manage employee payroll and compensation"
+		description: "Manage employee compensation",
+		href: "/admin/payroll"
 	},
 	{
 		title: "Personnel",
-		icon: <Image src="/person.svg" alt="Personnel" width={48} height={48} />,
-		description: "Employee records and management"
+		icon: <Image src="/three.svg" alt="Personnel" width={48} height={48} />,
+		description: "Employee records and management",
+		href: "/admin/personnel"
 	},
 	{
 		title: "Human Resources",
-		icon: <Image src="/person-2.svg" alt="HR" width={48} height={48} />,
-		description: "HR policies and employee relations"
+		icon: <Image src="/video.svg" alt="Human Resources" width={48} height={48} />,
+		description: "HR policies and documentation",
+		href: "/admin/hr"
 	},
 	{
 		title: "Purchase Orders",
-		icon: <Image src="/contract.svg" alt="Purchase Orders" width={48} height={48} />,
-		description: "Create and manage purchase orders"
+		icon: <Image src="/cart.svg" alt="Purchase Orders" width={48} height={48} />,
+		description: "Track and manage purchases",
+		href: "/admin/purchase-orders"
 	},
 	{
 		title: "Requisitions",
-		icon: <Image src="/document.svg" alt="Requisitions" width={48} height={48} />,
-		description: "Handle equipment and supply requests"
+		icon: <Image src="/list.svg" alt="Requisitions" width={48} height={48} />,
+		description: "Process equipment requests",
+		href: "/admin/requisitions"
 	}
 ];
 
