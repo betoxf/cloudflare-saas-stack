@@ -357,3 +357,49 @@ Currently implemented components:
 - Maintain responsive design with mobile menu
 - Keep existing auth functionality with login dialog and user dropdown
 
+# Department Sub-Sections Structure
+
+1. Drivers Department
+   - Learning (Training Courses)
+   - Dashboard (Trips & Income)
+   - Contact
+   - Navigation
+
+2. Pushers Department
+   - Face Scan
+   - Box Management by Company:
+     * Sandcan
+     * Liberty
+     * Propx
+     * ProFrac
+
+3. Dispatch Department
+   - Contact
+   - Analytics
+   - Dashboards by Company:
+     * Sandcan
+     * Liberty
+     * Propx
+     * ProFrac
+
+4. Service Department
+   - Box Status (Repairs & Maintenance)
+   - Mechanics Time Table
+   - Chassis Inspections
+   - Truck Inspections
+   - Diesel Expenses
+
+5. Administration Department
+   - Payroll
+   - Personnel
+   - Human Resources
+   - Purchase Orders
+   - Requisitions
+
+# Implementation Plan
+- Create nested routes for each department
+- Maintain consistent card styling
+- Add navigation between department views
+- Implement sub-category cards
+- Keep edge runtime configuration
+
