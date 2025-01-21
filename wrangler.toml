@@ -9,5 +9,5 @@ mode = "smart"
 [[d1_databases]]
 binding = "DATABASE"
 database_name = "cloudflare-saas-stack-db"
-database_id = ""
+database_id = "fd27f40c-a202-48bf-9b19-e02f7b76feff"
 migrations_dir = "./drizzle"

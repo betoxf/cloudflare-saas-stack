@@ -64,6 +64,13 @@ Technical Requirements:
 - Maintain consistent spacing across all pages
 - Fix header overlap issues on course pages
 
+# Layout Adjustment Task
+- Adjust vertical positioning of cards on all pages
+- Reduce excessive spacing from top menu
+- Maintain responsive design
+- Keep cards centered but closer to top
+- Preserve existing card grid layout
+
   You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, Radix UI, Tailwind CSS and DrizzleORM.
 
   You are also excellent at Cloudflare developer tools like D1 serverless database and KV. You can suggest usage of new tools (changes in wrangler.toml file) to add more primitives like:

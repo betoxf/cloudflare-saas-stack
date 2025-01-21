@@ -78,7 +78,9 @@ export default async function Page() {
 								<CardTitle className="text-xl font-semibold">{roles[0].title}</CardTitle>
 							</CardHeader>
 							<CardContent className="text-center text-sm text-muted-foreground">
-								{roles[0].description}
+								<p className="card-description">
+									{roles[0].description}
+								</p>
 							</CardContent>
 							<CardFooter className="justify-end pt-2 pr-4">
 								<Button 
@@ -104,7 +106,9 @@ export default async function Page() {
 										<CardTitle className="text-lg font-semibold">{role.title}</CardTitle>
 									</CardHeader>
 									<CardContent className="text-center text-xs text-muted-foreground">
-										{role.description}
+										<p className="card-description">
+											{role.description}
+										</p>
 									</CardContent>
 									<CardFooter className="justify-end pt-2 pr-2">
 										<Button 
@@ -128,7 +132,9 @@ export default async function Page() {
 								<CardTitle className="text-xl font-semibold">{roles[3].title}</CardTitle>
 							</CardHeader>
 							<CardContent className="text-center text-sm text-muted-foreground">
-								{roles[3].description}
+								<p className="card-description">
+									{roles[3].description}
+								</p>
 							</CardContent>
 							<CardFooter className="justify-end pt-2 pr-4">
 								<Button 
@@ -150,7 +156,9 @@ export default async function Page() {
 								<CardTitle className="text-xl font-semibold">{roles[4].title}</CardTitle>
 							</CardHeader>
 							<CardContent className="text-center text-sm text-muted-foreground">
-								{roles[4].description}
+								<p className="card-description">
+									{roles[4].description}
+								</p>
 							</CardContent>
 							<CardFooter className="justify-end pt-2 pr-4">
 								<Button 
@@ -177,7 +185,9 @@ export default async function Page() {
 									<CardTitle className="text-xl font-semibold">{role.title}</CardTitle>
 								</CardHeader>
 								<CardContent className="text-center text-sm text-muted-foreground">
-									{role.description}
+									<p className="card-description">
+										{role.description}
+									</p>
 								</CardContent>
 								<CardFooter className="justify-center pt-2">
 									<Button 
